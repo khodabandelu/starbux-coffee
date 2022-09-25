@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.khodabandelu</groupId>
+    <artifactId>starbux-coffee</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <name>starbux-coffee</name>
+    <description>Starbux Coffee Project</description>
+    <developers>
+        <developer>
+            <id>m_khodabandelu</id>
+            <name>Mahdi Khodabandelu</name>
+            <email>ma.khodabandelu@gmail.com</email>
+            <url>https://github.com/khodabandelu</url>
+        </developer>
+    </developers>
+    <properties>
+        <java.version>17</java.version>
+        <maven.compiler.source>18</maven.compiler.source>
+        <maven.compiler.target>18</maven.compiler.target>
+    </properties>
+
+    <modules>
+        <module>starbux-common</module>
+    </modules>
+
+</project>
