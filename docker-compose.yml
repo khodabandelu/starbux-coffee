@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - "mongodb_data:/data/db"
+    networks:
+      - starbuxNet
+  cassandra:
+    image: cassandra
+    container_name: cassandra
+    restart: always
+    ports:
+      - "9042:9042"
+    environment:
+      - HEAP_NEWSIZE=128M
+      - MAX_HEAP_SIZE=1048M
+    volumes:
+      - "cassandra_data:/var/lib/cassandra"
+    networks:
+      - starbuxNet
+networks:
+  starbuxNet:
+    name: starbuxNet
+    driver: bridge
+    attachable: true
+volumes:
+  cassandra_data:
+    driver: local
+  mongodb_data:
+    driver: local

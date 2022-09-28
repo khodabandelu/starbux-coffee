@@ -26,6 +26,11 @@
 
     <modules>
         <module>starbux-common</module>
+        <module>cqrs-core</module>
+        <module>starbux-product-cmd</module>
+        <module>starbux-product-query</module>
+        <module>starbux-cart</module>
+        <module>starbux-order</module>
     </modules>
 
 </project>

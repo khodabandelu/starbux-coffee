@@ -12,7 +12,7 @@
     <artifactId>starbux-order</artifactId>
     <version>1.0.0</version>
     <name>starbux-order</name>
-    <description>Starbux Coffee Order Command and Query API Project</description>
+    <description>Starbux Coffee Order API Project</description>
     <properties>
         <java.version>17</java.version>
     </properties>
