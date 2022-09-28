@@ -1,0 +1,24 @@
+server:
+  port: 8784
+
+spring:
+  data:
+    cassandra:
+      contact-points: localhost:9042
+      local-datacenter: datacenter1
+      keyspace-name: starbuxProduct
+      schema-action: create_if_not_exists
+  kafka:
+    listener:
+      ack-mode: manual_immediate
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: brokerAccountConsumer
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'

@@ -1,0 +1,7 @@
+server:
+  port: 8781
+
+services:
+  product:
+    hostname: localhost
+    port: 8784
