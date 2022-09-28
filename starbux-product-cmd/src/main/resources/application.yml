@@ -1,0 +1,19 @@
+server:
+  port: 8783
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: starbuxProduct
+  #        cassandra:
+  #            contact-points: localhost:9042
+  #            local-datacenter: datacenter1
+  #            keyspace-name: starbuxProduct
+  #            schema-action: create_if_not_exists
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
