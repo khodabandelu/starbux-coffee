@@ -1,6 +1,18 @@
 server:
   port: 8781
 
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: starbuxCart
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
 services:
   product:
     hostname: localhost

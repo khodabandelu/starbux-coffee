@@ -1,0 +1,40 @@
+{
+  "name":"Black Coffee",
+  "categoryType":"product",
+  "price":"4"
+}
+{
+  "name":"Latte",
+  "categoryType":"product",
+  "price":"5"
+}
+{
+  "name":"Mocha",
+  "categoryType":"product",
+  "price":"6"
+}
+{
+  "name":"Tea",
+  "categoryType":"product",
+  "price":"3"
+}
+{
+  "name":"Milk",
+  "categoryType":"topping",
+  "price":"2"
+}
+{
+  "name":"Hazelnut syrup",
+  "categoryType":"topping",
+  "price":"3"
+}
+{
+  "name":"Chocolate sauce",
+  "categoryType":"topping",
+  "price":"5"
+}
+{
+  "name":"Lemon",
+  "categoryType":"topping",
+  "price":"2"
+}

@@ -7,11 +7,11 @@ spring:
       host: localhost
       port: 27017
       database: starbuxProduct
-  #        cassandra:
-  #            contact-points: localhost:9042
-  #            local-datacenter: datacenter1
-  #            keyspace-name: starbuxProduct
-  #            schema-action: create_if_not_exists
+#        cassandra:
+#            contact-points: localhost:9042
+#            local-datacenter: datacenter1
+#            keyspace-name: starbuxProduct
+#            schema-action: create_if_not_exists
   kafka:
     producer:
       bootstrap-servers: localhost:9092

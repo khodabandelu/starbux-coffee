@@ -1,0 +1,19 @@
+FROM openjdk:17-jdk-alpine as build
+
+WORKDIR /app
+
+COPY ./cqrs-core cqrs-core
+COPY ./starbux-common starbux-common
+COPY ./starbux-cart ./
+COPY .mvn/ .mvn
+COPY mvnw ./
+
+RUN ./mvnw -B  -f cqrs-core/ clean install
+RUN ./mvnw -B  -f starbux-common/ clean install
+RUN ./mvnw -B  clean package -DskipTest
+
+FROM openjdk:17-jdk-alpine
+
+COPY --from=build app/target/starbux-cart-1.0.0.jar .
+
+ENTRYPOINT ["java", "-jar", "starbux-cart-1.0.0.jar"]

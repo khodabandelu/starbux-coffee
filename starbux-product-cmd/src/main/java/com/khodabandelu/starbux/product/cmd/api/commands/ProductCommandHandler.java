@@ -24,13 +24,6 @@ public class ProductCommandHandler implements CommandHandler {
     }
 
     @Override
-    public void handle(DeactivateProductCommand command) {
-        var aggregate = eventSourcingHandler.getById(command.getId());
-        aggregate.deactivateProduct();
-        eventSourcingHandler.save(aggregate);
-    }
-
-    @Override
     public void handle(DeleteProductCommand command) {
         var aggregate = eventSourcingHandler.getById(command.getId());
         //todo if product has not any used event in other systems you can delete all events based  on this product id

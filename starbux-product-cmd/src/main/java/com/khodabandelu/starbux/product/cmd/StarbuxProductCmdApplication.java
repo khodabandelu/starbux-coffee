@@ -1,10 +1,7 @@
 package com.khodabandelu.starbux.product.cmd;
 
 import com.khodabandelu.cqrs.core.infrastructure.CommandDispatcher;
-import com.khodabandelu.starbux.product.cmd.api.commands.CommandHandler;
-import com.khodabandelu.starbux.product.cmd.api.commands.CreateProductCommand;
-import com.khodabandelu.starbux.product.cmd.api.commands.DeactivateProductCommand;
-import com.khodabandelu.starbux.product.cmd.api.commands.UpdateProductInfoCommand;
+import com.khodabandelu.starbux.product.cmd.api.commands.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,8 +22,7 @@ public class StarbuxProductCmdApplication {
     public void registerHandler() {
         commandDispatcher.registerHandler(CreateProductCommand.class, commandHandler::handle);
         commandDispatcher.registerHandler(UpdateProductInfoCommand.class, commandHandler::handle);
-        commandDispatcher.registerHandler(DeactivateProductCommand.class, commandHandler::handle);
-        commandDispatcher.registerHandler(DeactivateProductCommand.class, commandHandler::handle);
+        commandDispatcher.registerHandler(DeleteProductCommand.class, commandHandler::handle);
     }
 
 }

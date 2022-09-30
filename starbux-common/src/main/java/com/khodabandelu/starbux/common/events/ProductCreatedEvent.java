@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @SuperBuilder
 public class ProductCreatedEvent extends BaseEvent {
-    private String id;
+//    private String id;
     private Date createdDate;
     private String name;
     private String categoryType;

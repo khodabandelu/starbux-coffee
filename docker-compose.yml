@@ -19,11 +19,74 @@ services:
       - "9042:9042"
     environment:
       - HEAP_NEWSIZE=128M
-      - MAX_HEAP_SIZE=1048M
+      - MAX_HEAP_SIZE=248M
     volumes:
       - "cassandra_data:/var/lib/cassandra"
     networks:
       - starbuxNet
+  zookeeper:
+    image: bitnami/zookeeper
+    container_name: zookeeper
+    restart: always
+    ports:
+      - "2181:2181"
+    volumes:
+      - "zookeeper_data:/bitnami"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  kafka:
+    image: bitnami/kafka
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    restart: always
+    volumes:
+      - "kafka_data:/bitnami"
+    environment:
+      - KAFKA_ZOOKEEPER_CONNECT=ZOOKEEPER:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+    depends_on:
+      - zookeeper
+  starbux-product-cmd:
+    build:
+      dockerfile: Dockerfile-product-cmd
+    image: starbux-product-cmd
+    container_name: starbux-product-cmd
+    ports:
+      - 8783:8783
+    environment:
+      - BUILDKIT_STEP_LOG_MAX_SIZE=20971520
+      - BUILDKIT_STEP_LOG_MAX_SPEED=1048576
+    networks:
+      - starbuxNet
+    depends_on:
+      - mongo
+      - kafka
+  starbux-product-query:
+    build:
+      dockerfile: Dockerfile-product-query
+    image: starbux-product-query
+    container_name: starbux-product-query
+    ports:
+      - 8784:8784
+    networks:
+      - starbuxNet
+    depends_on:
+      - cassandra
+      - kafka
+  starbux-cart:
+    build:
+      dockerfile: Dockerfile-cart
+    container_name: starbux-cart
+    ports:
+      - 8781:8781
+    networks:
+      - starbuxNet
+    depends_on:
+      - mongo
+      - kafka
 networks:
   starbuxNet:
     name: starbuxNet
@@ -33,4 +96,8 @@ volumes:
   cassandra_data:
     driver: local
   mongodb_data:
+    driver: local
+  zookeeper_data:
+    driver: local
+  kafka_data:
     driver: local

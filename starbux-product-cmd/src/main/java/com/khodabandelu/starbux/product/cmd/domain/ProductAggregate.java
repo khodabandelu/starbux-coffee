@@ -2,7 +2,7 @@ package com.khodabandelu.starbux.product.cmd.domain;
 
 import com.khodabandelu.cqrs.core.domain.AggregateRoot;
 import com.khodabandelu.starbux.common.events.ProductCreatedEvent;
-import com.khodabandelu.starbux.common.events.ProductDeactivatedEvent;
+import com.khodabandelu.starbux.common.events.ProductDeletedEvent;
 import com.khodabandelu.starbux.common.events.ProductInfoUpdatedEvent;
 import com.khodabandelu.starbux.product.cmd.api.commands.CreateProductCommand;
 import com.khodabandelu.starbux.product.cmd.api.commands.UpdateProductInfoCommand;
@@ -36,6 +36,7 @@ public class ProductAggregate extends AggregateRoot {
                 .id(this.id)
                 .name(command.getName())
                 .categoryType(command.getCategoryType().name())
+                .price(command.getPrice())
                 .build());
     }
 
@@ -47,12 +48,12 @@ public class ProductAggregate extends AggregateRoot {
         if (!this.active) {
             throw new IllegalStateException("The product has already been deactivated!");
         }
-        raiseEvent(ProductDeactivatedEvent.builder()
+        raiseEvent(ProductDeletedEvent.builder()
                 .id(this.id)
                 .build());
     }
 
-    public void apply(ProductDeactivatedEvent event) {
+    public void apply(ProductDeletedEvent event) {
         this.id = event.getId();
         this.active = false;
     }
