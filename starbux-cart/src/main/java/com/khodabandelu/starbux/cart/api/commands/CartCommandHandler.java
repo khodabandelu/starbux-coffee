@@ -24,19 +24,49 @@ public class CartCommandHandler implements CommandHandler {
         if (!StringUtils.hasText(command.getProductId())) {
             throw new IllegalStateException("Product must be defined!");
         }
-        var product = productService.findById(command.getProductId());
-        List<Product> toppings = new ArrayList<>();
-        command.getToppingIds().forEach(toppingId -> toppings.add(productService.findById(toppingId)));
-        var aggregate = new CartAggregate(command, product, toppings);
-        cartService.save(aggregate);
+        var cartAggregate = cartService.getCurrentCart(command.getCustomer());
+//        if (cartAggregate == null) {
+//            throw new IllegalStateException("The cart has already been created!");
+//        }
+
+        if (cartAggregate == null) {
+            var product = productService.findById(command.getProductId());
+            List<Product> toppings = new ArrayList<>();
+            command.getToppingIds().forEach(toppingId -> toppings.add(productService.findById(toppingId)));
+            cartAggregate = new CartAggregate(command, product, toppings);
+            cartService.save(cartAggregate);
+        } else {
+            var product = productService.findById(command.getProductId());
+            cartAggregate.addItem(product, null);
+            List<Product> toppings = new ArrayList<>();
+            command.getToppingIds().forEach(toppingId -> {
+                toppings.add(productService.findById(toppingId));
+            });
+            for (Product topping : toppings) {
+                cartAggregate.addItem(topping, product);
+            }
+            cartService.save(cartAggregate);
+        }
     }
 
     @Override
     public void handle(AddItemCommand command) {
         var aggregate = cartService.getById(command.getId());
+        if (aggregate==null){
+            throw new IllegalStateException("This Cart not exist!");
+        }
+
         var product = productService.findById(command.getProductId());
-        var topping = productService.findById(command.getToppingId());
-        aggregate.addItem(product, topping);
+
+        aggregate.addItem(product, null);
+
+        List<Product> toppings = new ArrayList<>();
+        command.getToppingIds().forEach(toppingId -> {
+            toppings.add(productService.findById(toppingId));
+        });
+        for (Product topping : toppings) {
+            aggregate.addItem(topping, product);
+        }
         cartService.save(aggregate);
     }
 

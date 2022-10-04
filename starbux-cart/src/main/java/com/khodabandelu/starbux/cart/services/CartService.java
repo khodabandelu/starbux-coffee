@@ -6,4 +6,6 @@ public interface CartService {
     void save(CartAggregate cart);
 
     CartAggregate getById(String id);
+
+    CartAggregate getCurrentCart(String customer);
 }

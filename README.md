@@ -1,22 +1,47 @@
-# Getting Started
 
-### Reference Documentation
-For further reference, please consider the following sections:
+## Introduction
+In this project i implement cart system with microservice style 
+i use some concepts in this project such as hexagonal architecture and cqrs
 
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.7.4/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.7.4/maven-plugin/reference/html/#build-image)
-* [Spring Security](https://docs.spring.io/spring-boot/docs/2.7.4/reference/htmlsingle/#web.security)
-* [Spring Web](https://docs.spring.io/spring-boot/docs/2.7.4/reference/htmlsingle/#web)
-* [Spring for Apache Kafka](https://docs.spring.io/spring-boot/docs/2.7.4/reference/htmlsingle/#messaging.kafka)
 
-### Guides
-The following guides illustrate how to use some features concretely:
+## Purpose
+The purpose of this project is to simulate order drink with topping and get amount with some calculation like discount price
 
-* [Securing a Web Application](https://spring.io/guides/gs/securing-web/)
-* [Spring Boot and OAuth2](https://spring.io/guides/tutorials/spring-boot-oauth2/)
-* [Authenticating a User with LDAP](https://spring.io/guides/gs/authenticating-ldap/)
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/rest/)
+## Requirements
+- java 17
+- kafka
+- mongodb 
+- cassandra
+- maven
+
+
+## Modules
+this project has multiple modules
+
+- starbux-product-cmd --> this module is responsible to create and update and delete products in mongodb
+- starbux-product-query --> this module is responsible to fetch products data with some endpoints
+- starbux-cart --> this module is responsible to create cart with products and calculate price
+- starbux-order --> this module is responsible to finalize order with payment -- but for simplicity this module didn't implement
+
+## Build
+
+- Maven
+  you can use provided maven cmd in the root of the project to build and run this project
+```shell 
+.\mvnw clean install
+```
+## Test
+to test this project you can use maven test command to run provided tests in test package
+```shell 
+.\mvnw clean test
+```
+
+## Run
+- Docker -
+  you can run docker compose of root folder to build and run this project.
+```shell
+docker-compose up -d
+```
+
+
 

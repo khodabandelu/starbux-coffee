@@ -8,6 +8,8 @@ COPY ./starbux-product-cmd ./
 COPY .mvn/ .mvn
 COPY mvnw ./
 
+
+RUN sed -i 's/\r$//' mvnw
 RUN ./mvnw -B  -f cqrs-core/ clean install
 RUN ./mvnw -B  -f starbux-common/ clean install
 RUN ./mvnw -B  clean package -DskipTest

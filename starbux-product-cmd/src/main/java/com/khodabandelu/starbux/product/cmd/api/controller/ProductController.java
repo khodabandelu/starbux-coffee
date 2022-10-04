@@ -24,6 +24,12 @@ public class ProductController {
     private final Logger logger = Logger.getLogger(ProductController.class.getName());
     private final CommandDispatcher commandDispatcher;
 
+    /**
+     * {@code POST  /api/v1/product } : create product
+     * @param command the command with initial data to create product.
+     * @throws IllegalStateException {@code 400 (Bad Request)} if the data is not correct.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with message successfully.
+     * */
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<BaseResponse> createProduct(@RequestBody CreateProductCommand command) {
@@ -42,6 +48,13 @@ public class ProductController {
         }
     }
 
+    /**
+     * {@code PUT  /api/v1/product } : update product
+     * @param id the id of product that you want to update it.
+     * @param command the command with data to update product.
+     * @throws IllegalStateException {@code 400 (Bad Request)} if the data is not correct.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with message successfully.
+     * */
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<BaseResponse> updateProduct(@PathVariable("id") String id, @RequestBody UpdateProductInfoCommand command) {
@@ -59,6 +72,12 @@ public class ProductController {
         }
     }
 
+    /**
+     * {@code DELETE  /api/v1/product } : delete product
+     * @param id the id of product that you want to delete it.
+     * @throws IllegalStateException {@code 400 (Bad Request)} if the data is not correct.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with message successfully.
+     * */
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<BaseResponse> deleteProduct(@PathVariable("id") String id) {

@@ -51,14 +51,50 @@ public class CartQueryHandler implements QueryHandler {
     }
 
     @Override
+    public List<BaseEntity> handle(FindLastCartByCustomerQuery query) {
+        var cart = cartRepository.findFirstByCustomerOrderByCreatedDateDesc(query.getCustomer());
+        if (cart.isEmpty()) {
+            return null;
+        }
+        List<BaseEntity> cartList = new ArrayList<>();
+        cartList.add(cart.get());
+        return cartList;
+    }
+
+    @Override
+    public List<BaseEntity> handle(FindLastConfimredCartByCustomerQuery query) {
+        var cart = cartRepository.findFirstByCustomerAndConfirmedOrderByCreatedDateDesc(query.getCustomer(),true);
+        if (cart.isEmpty()) {
+            return null;
+        }
+        List<BaseEntity> cartList = new ArrayList<>();
+        cartList.add(cart.get());
+        return cartList;
+    }
+
+    @Override
+    public List<BaseEntity> handle(FindCurrentCartByCustomerQuery query) {
+        var cart = cartRepository.findByCustomerAndConfirmedFalse(query.getCustomer());
+        if (cart.isEmpty()) {
+            return null;
+        }
+        List<BaseEntity> cartList = new ArrayList<>();
+        cartList.add(cart.get());
+        return cartList;
+    }
+
+    @Override
     public Double handle(FindTotalPriceAllCartsByCustomerQuery query) {
         GroupOperation sumTotalPriceGroup = group("customer")
                 .sum("totalPrice").as("sumTotalPrice");
         MatchOperation filterCustomer = match(new Criteria("customer").is(query.getCustomer()));
-        Aggregation aggregation = Aggregation.newAggregation(filterCustomer,sumTotalPriceGroup);
+        Aggregation aggregation = Aggregation.newAggregation(filterCustomer, sumTotalPriceGroup);
 
         AggregationResults<Document> result = mongoTemplate.aggregate(
                 aggregation, "cart", Document.class);
+        if (result.getUniqueMappedResult()==null){
+            return null;
+        }
         return result.getUniqueMappedResult().getDouble("sumTotalPrice");
     }
 

@@ -8,15 +8,13 @@ import com.khodabandelu.cqrs.core.domain.AggregateRoot;
 import lombok.Getter;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 public class CartAggregate extends AggregateRoot {
     private Boolean confirmed;
-    private String customer;
+    private final String customer;
+    private final Date createdDate;
     private double discountPrice;
     private double originalPrice;
     private double totalPrice;
@@ -26,6 +24,7 @@ public class CartAggregate extends AggregateRoot {
         this.id = command.getId();
         this.customer = command.getCustomer();
         this.confirmed = false;
+        this.createdDate = new Date();
         this.items = new ArrayList<>();
 
         addItem(product, null);
@@ -39,6 +38,7 @@ public class CartAggregate extends AggregateRoot {
         this.id = entity.getId();
         this.confirmed = entity.getConfirmed();
         this.customer = entity.getCustomer();
+        this.createdDate = entity.getCreatedDate();
         this.originalPrice = entity.getOriginalPrice();
         this.items = new ArrayList<>();
         if (entity.getItems() != null && entity.getItems().size() > 0) {
@@ -52,6 +52,9 @@ public class CartAggregate extends AggregateRoot {
     }
 
     public void addItem(Product product, Product masterProduct) {
+        if (confirmed){
+            throw new IllegalStateException("The cart has already been confirmed!");
+        }
         if (product == null || !StringUtils.hasText(product.getId())) {
             throw new IllegalStateException("Product must be filled!");
         }
@@ -67,6 +70,9 @@ public class CartAggregate extends AggregateRoot {
     }
 
     public void removeItem(Product product, boolean withToppings) {
+        if (confirmed){
+            throw new IllegalStateException("The cart has already been confirmed!");
+        }
         if (product == null || !StringUtils.hasText(product.getId())) {
             throw new IllegalStateException("Product must be filled!");
         }

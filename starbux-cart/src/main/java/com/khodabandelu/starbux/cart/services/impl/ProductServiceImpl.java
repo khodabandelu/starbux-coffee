@@ -22,7 +22,7 @@ public class ProductServiceImpl implements ProductService {
     //todo add cache product
     @Override
     public Product findById(String id) {
-        var url = "http://" + productServiceHostname + ":" + productServicePort + "/api/v1/product/byId/" + id;
+        var url = "http://" + productServiceHostname + ":" + productServicePort + "/api/v1/product/" + id;
         var response = restTemplate.getForObject(url, ProductResponse.class);
         return response != null && response.getProducts() != null ? response.getProducts().get(0) : null;
     }

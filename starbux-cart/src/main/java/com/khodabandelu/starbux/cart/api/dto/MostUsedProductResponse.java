@@ -4,15 +4,18 @@ import com.khodabandelu.starbux.common.dto.BaseResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OpenCartResponse extends BaseResponse {
-    private String id;
+@SuperBuilder
+public class MostUsedProductResponse extends BaseResponse {
+    private List<MostUsedProductDto> products;
 
-    public OpenCartResponse(String message, String id) {
+    public MostUsedProductResponse(String message) {
         super(message);
-        this.id = id;
     }
 }

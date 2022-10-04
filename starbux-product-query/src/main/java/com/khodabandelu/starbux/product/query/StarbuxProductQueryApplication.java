@@ -27,6 +27,7 @@ public class StarbuxProductQueryApplication {
         queryDispatcher.registerHandler(FindProductByIdQuery.class, queryHandler::handle);
         queryDispatcher.registerHandler(FindProductByCategoryQuery.class, queryHandler::handle);
         queryDispatcher.registerHandler(FindProductByPriceQuery.class, queryHandler::handle);
+        queryDispatcher.registerHandler(FindProductByNameQuery.class, queryHandler::handle);
     }
 
 }

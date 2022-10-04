@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductLookupResponse extends BaseResponse {
-    private List<Product> products;
+    private List<ProductDto> products;
 
     public ProductLookupResponse(String message){
         super(message);

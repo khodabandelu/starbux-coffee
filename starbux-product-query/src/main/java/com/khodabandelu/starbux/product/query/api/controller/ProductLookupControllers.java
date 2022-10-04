@@ -1,10 +1,11 @@
 package com.khodabandelu.starbux.product.query.api.controller;
 
-import com.khodabandelu.starbux.product.query.api.dto.ProductLookupResponse;
-import com.khodabandelu.starbux.product.query.api.queries.*;
-import com.khodabandelu.starbux.product.query.domains.Product;
 import com.khodabandelu.cqrs.core.infrastructure.QueryDispatcher;
 import com.khodabandelu.starbux.common.dto.EqualityType;
+import com.khodabandelu.starbux.product.query.api.dto.ProductLookupResponse;
+import com.khodabandelu.starbux.product.query.api.mapper.ProductMapper;
+import com.khodabandelu.starbux.product.query.api.queries.*;
+import com.khodabandelu.starbux.product.query.domains.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,11 +27,18 @@ public class ProductLookupControllers {
 
     private final QueryDispatcher queryDispatcher;
 
+    private final ProductMapper productMapper;
 
+
+    /**
+     * {@code GET /api/v1/product} : get all products.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body all products and with message successfully.
+     */
     @GetMapping
     public ResponseEntity<ProductLookupResponse> getAllProducts() {
         try {
-            List<Product> products = queryDispatcher.send(new FindAllProductsQuery());
+            var products = productMapper.toDto( queryDispatcher.send(new FindAllProductsQuery()));
             if (products == null || products.size() == 0) {
                 return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
             }
@@ -46,10 +54,16 @@ public class ProductLookupControllers {
         }
     }
 
-    @GetMapping("/byId/{id}")
+
+    /**
+     * {@code GET /api/v1/product} : get product by id.
+     * @param id id of product that you want to fetch it.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body all products and with message successfully.
+     */
+    @GetMapping("/{id}")
     public ResponseEntity<ProductLookupResponse> getAllProductById(@PathVariable("id") String id) {
         try {
-            List<Product> products = queryDispatcher.send(new FindProductByIdQuery(id));
+            var products = productMapper.toDto(queryDispatcher.send(new FindProductByIdQuery(id)));
             if (products == null || products.size() == 0) {
                 return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
             }
@@ -65,10 +79,15 @@ public class ProductLookupControllers {
         }
     }
 
+    /**
+     * {@code GET /api/v1/product/byName} : get product by name.
+     * @param name name of product that you want to fetch it.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body all products and with message successfully.
+     */
     @GetMapping("/byName/{name}")
     public ResponseEntity<ProductLookupResponse> getAllProductByName(@PathVariable("name") String name) {
         try {
-            List<Product> products = queryDispatcher.send(new FindProductByNameQuery(name));
+            var products = productMapper.toDto(queryDispatcher.send(new FindProductByNameQuery(name)));
             if (products == null || products.size() == 0) {
                 return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
             }
@@ -84,10 +103,15 @@ public class ProductLookupControllers {
         }
     }
 
+    /**
+     * {@code GET /api/v1/product/byName} : get all products by category type.
+     * @param categoryType category type of product that you want to fetch it.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body all products and with message successfully.
+     */
     @GetMapping("/byCategory/{categoryType}")
     public ResponseEntity<ProductLookupResponse> getAllProductByCategoryType(@PathVariable("categoryType") String categoryType) {
         try {
-            List<Product> products = queryDispatcher.send(new FindProductByCategoryQuery(categoryType));
+            var products = productMapper.toDto(queryDispatcher.send(new FindProductByCategoryQuery(categoryType)));
             if (products == null || products.size() == 0) {
                 return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
             }
@@ -103,10 +127,16 @@ public class ProductLookupControllers {
         }
     }
 
+    /**
+     * {@code GET /api/v1/product/byPrice} : get all products by range of price.
+     * @param equalityType equality type of price that you want to filter price.
+     * @param price price of product that you want to fetch it.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body all products and with message successfully.
+     */
     @GetMapping("/byPrice/{equalityType}/{price}")
     public ResponseEntity<ProductLookupResponse> getAllProductByPrice(@PathVariable("equalityType") EqualityType equalityType, @PathVariable("price") double price) {
         try {
-            List<Product> products = queryDispatcher.send(new FindProductByPriceQuery(equalityType, price));
+            var products = productMapper.toDto(queryDispatcher.send(new FindProductByPriceQuery(equalityType, price)));
             if (products == null || products.size() == 0) {
                 return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
             }

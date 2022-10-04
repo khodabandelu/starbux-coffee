@@ -47,13 +47,10 @@ public class ProductQueryHandler implements QueryHandler {
 
     @Override
     public List<BaseEntity> handle(FindProductByCategoryQuery query) {
-        var product = productRepository.findByCategoryType(query.getCategoryType());
-        if (product.isEmpty()) {
-            return null;
-        }
-        List<BaseEntity> productList = new ArrayList<>();
-        productList.add(product.get());
-        return productList;
+        Iterable<Product> products = productRepository.findByCategoryType(query.getCategoryType());
+        List<BaseEntity> productsList = new ArrayList<>();
+        products.forEach(productsList::add);
+        return productsList;
     }
 
     @Override

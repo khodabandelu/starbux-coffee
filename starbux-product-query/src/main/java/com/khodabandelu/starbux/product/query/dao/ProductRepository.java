@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface ProductRepository extends CassandraRepository<Product, String> {
 
     Optional<Product> findByName(String name);
-    Optional<Product> findByCategoryType(String categoryType);
+    List<Product> findByCategoryType(String categoryType);
 
     List<BaseEntity> findByPriceGreaterThan(double balance);
 

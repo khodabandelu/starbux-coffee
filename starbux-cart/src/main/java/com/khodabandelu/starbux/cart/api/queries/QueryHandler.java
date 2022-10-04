@@ -9,6 +9,12 @@ public interface QueryHandler {
     List<BaseEntity> handle(FindCartByIdQuery query);
     List<BaseEntity> handle(FindCartByCustomerQuery query);
 
+    List<BaseEntity> handle(FindLastCartByCustomerQuery query);
+
+    List<BaseEntity> handle(FindLastConfimredCartByCustomerQuery query);
+
+    List<BaseEntity> handle(FindCurrentCartByCustomerQuery query);
+
     Double handle(FindTotalPriceAllCartsByCustomerQuery query);
 
     List<BaseEntity> handle(FindMostUsedToppingQuery query);

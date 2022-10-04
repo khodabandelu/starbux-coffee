@@ -35,6 +35,9 @@ public class StarbuxCartApplication {
         queryDispatcher.registerHandler(FindAllCartsQuery.class,queryHandler::handle);
         queryDispatcher.registerHandler(FindCartByIdQuery.class,queryHandler::handle);
         queryDispatcher.registerHandler(FindCartByCustomerQuery.class,queryHandler::handle);
+        queryDispatcher.registerHandler(FindCurrentCartByCustomerQuery.class,queryHandler::handle);
+        queryDispatcher.registerHandler(FindLastCartByCustomerQuery.class,queryHandler::handle);
+        queryDispatcher.registerHandler(FindLastConfimredCartByCustomerQuery.class,queryHandler::handle);
         queryDispatcher.registerHandler(FindTotalPriceAllCartsByCustomerQuery.class,queryHandler::handle);
         queryDispatcher.registerHandler(FindMostUsedToppingQuery.class,queryHandler::handle);
     }

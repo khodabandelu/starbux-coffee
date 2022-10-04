@@ -20,6 +20,18 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartAggregate getById(String id){
         var entity =  this.cartRepository.findById(id);
+        if (entity.isEmpty()){
+            return null;
+        }
         return new CartAggregate(entity.get());
     }
+    @Override
+    public CartAggregate getCurrentCart(String customer){
+        var entity =  this.cartRepository.findByCustomerAndConfirmedFalse(customer);
+        if (entity.isEmpty()){
+            return null;
+        }
+        return new CartAggregate(entity.get());
+    }
+
 }
