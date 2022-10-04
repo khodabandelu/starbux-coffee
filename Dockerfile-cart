@@ -9,8 +9,8 @@ COPY .mvn/ .mvn
 COPY mvnw ./
 
 RUN sed -i 's/\r$//' mvnw
-RUN ./mvnw -B  -f cqrs-core/ clean install
-RUN ./mvnw -B  -f starbux-common/ clean install
+RUN ./mvnw -B  -f cqrs-core/ clean install -DskipTest
+RUN ./mvnw -B  -f starbux-common/ clean install -DskipTest
 RUN ./mvnw -B  clean package -DskipTest
 
 FROM openjdk:17-jdk-alpine
