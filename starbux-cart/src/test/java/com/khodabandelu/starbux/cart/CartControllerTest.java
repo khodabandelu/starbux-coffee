@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.khodabandelu.starbux.cart.api.commands.AddItemCommand;
 import com.khodabandelu.starbux.cart.api.commands.CreateCartCommand;
 import com.khodabandelu.starbux.cart.api.commands.RemoveItemCommand;
-import com.khodabandelu.starbux.cart.api.dto.CreateCartResponse;
+import com.khodabandelu.starbux.cart.api.dto.CartLookupResponse;
 import com.khodabandelu.starbux.cart.dto.Product;
 import com.khodabandelu.starbux.cart.services.ProductService;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,9 +19,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -83,7 +83,7 @@ public class CartControllerTest {
         toppingIds.add("101");
         toppingIds.add("102");
         var command = CreateCartCommand.builder()
-                .customer("Mahdi Khodabandelu")
+                .customer("Mahdi")
                 .productId("1")
                 .toppingIds(toppingIds)
                 .build();
@@ -103,21 +103,27 @@ public class CartControllerTest {
         var createCartCommandToppingIds = new ArrayList<String>();
         createCartCommandToppingIds.add("101");
         var createCartCommand = CreateCartCommand.builder()
-                .customer("Mahdi Khodabandelu")
+                .customer("Mahdi")
                 .productId("1")
                 .toppingIds(createCartCommandToppingIds)
                 .build();
 
         var createCartCommandJsonContent = objectMapper.writeValueAsString(createCartCommand);
 
-        var createCartCommandResult = this.mockMvc.perform(post("/api/v1/cart")
+        this.mockMvc.perform(post("/api/v1/cart")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createCartCommandJsonContent))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNotEmpty())
-                .andExpect(jsonPath("$.message").isNotEmpty()).andReturn();
+                .andExpect(jsonPath("$.message").isNotEmpty());
 
-        var createCartCommandResponse = objectMapper.readValue(createCartCommandResult.getResponse().getContentAsString(), CreateCartResponse.class);
+        var currentCart = this.mockMvc.perform(get("/api/v1/cart/current/customer/" + "Mahdi")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andReturn();
+
+        var currentCartResponse = objectMapper.readValue(currentCart.getResponse().getContentAsString(), CartLookupResponse.class);
 
         var addItemCommandToppingIds = new ArrayList<String>();
         addItemCommandToppingIds.add("102");
@@ -128,11 +134,10 @@ public class CartControllerTest {
 
         var jsonContent = objectMapper.writeValueAsString(addItemCommand);
 
-        this.mockMvc.perform(post("/api/v1/cart/" + createCartCommandResponse.getId() + "/addItem")
+        this.mockMvc.perform(post("/api/v1/cart/" + currentCartResponse.getCarts().get(0).getId() + "/addItem")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").isNotEmpty())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").isNotEmpty());
     }
 
@@ -141,21 +146,27 @@ public class CartControllerTest {
         var createCartCommandToppingIds = new ArrayList<String>();
         createCartCommandToppingIds.add("101");
         var createCartCommand = CreateCartCommand.builder()
-                .customer("Mahdi Khodabandelu")
+                .customer("Mahdi")
                 .productId("1")
                 .toppingIds(createCartCommandToppingIds)
                 .build();
 
         var createCartCommandJsonContent = objectMapper.writeValueAsString(createCartCommand);
 
-        var createCartCommandResult = this.mockMvc.perform(post("/api/v1/cart")
+        this.mockMvc.perform(post("/api/v1/cart")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createCartCommandJsonContent))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNotEmpty())
-                .andExpect(jsonPath("$.message").isNotEmpty()).andReturn();
+                .andExpect(jsonPath("$.message").isNotEmpty());
 
-        var createCartCommandResponse = objectMapper.readValue(createCartCommandResult.getResponse().getContentAsString(), CreateCartResponse.class);
+        var currentCart = this.mockMvc.perform(get("/api/v1/cart/current/customer/" + "Mahdi")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andReturn();
+
+        var currentCartResponse = objectMapper.readValue(currentCart.getResponse().getContentAsString(), CartLookupResponse.class);
 
         var addItemCommandToppingIds = new ArrayList<String>();
         addItemCommandToppingIds.add("102");
@@ -166,11 +177,10 @@ public class CartControllerTest {
 
         var jsonContentAddItemCommand = objectMapper.writeValueAsString(addItemCommand);
 
-        this.mockMvc.perform(post("/api/v1/cart/" + createCartCommandResponse.getId() + "/addItem")
+        this.mockMvc.perform(post("/api/v1/cart/" + currentCartResponse.getCarts().get(0).getId() + "/addItem")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContentAddItemCommand))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").isNotEmpty())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").isNotEmpty());
 
         var removeItemCommand = RemoveItemCommand.builder()
@@ -179,11 +189,10 @@ public class CartControllerTest {
 
         var jsonContentRemoveItemCommand = objectMapper.writeValueAsString(removeItemCommand);
 
-        this.mockMvc.perform(post("/api/v1/cart/" + createCartCommandResponse.getId() + "/removeItem")
+        this.mockMvc.perform(post("/api/v1/cart/" + currentCartResponse.getCarts().get(0).getId() + "/removeItem")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContentRemoveItemCommand))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").isNotEmpty())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").isNotEmpty());
 
 
@@ -194,26 +203,30 @@ public class CartControllerTest {
         var createCartCommandToppingIds = new ArrayList<String>();
         createCartCommandToppingIds.add("101");
         var createCartCommand = CreateCartCommand.builder()
-                .customer("Mahdi Khodabandelu")
+                .customer("Mahdi")
                 .productId("1")
                 .toppingIds(createCartCommandToppingIds)
                 .build();
 
         var createCartCommandJsonContent = objectMapper.writeValueAsString(createCartCommand);
 
-        var createCartCommandResult = this.mockMvc.perform(post("/api/v1/cart")
+        this.mockMvc.perform(post("/api/v1/cart")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createCartCommandJsonContent))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNotEmpty())
-                .andExpect(jsonPath("$.message").isNotEmpty()).andReturn();
+                .andExpect(jsonPath("$.message").isNotEmpty());
 
-        var createCartCommandResponse = objectMapper.readValue(createCartCommandResult.getResponse().getContentAsString(), CreateCartResponse.class);
+        var currentCart = this.mockMvc.perform(get("/api/v1/cart/current/customer/" + "Mahdi")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andReturn();
 
-        this.mockMvc.perform(post("/api/v1/cart/" + createCartCommandResponse.getId() + "/confirmCart")
+        var currentCartResponse = objectMapper.readValue(currentCart.getResponse().getContentAsString(), CartLookupResponse.class);
+        this.mockMvc.perform(post("/api/v1/cart/" + currentCartResponse.getCarts().get(0).getId() + "/confirmCart")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").isNotEmpty())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").isNotEmpty());
     }
 

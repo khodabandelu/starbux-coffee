@@ -85,7 +85,7 @@ public class CartAggregate extends AggregateRoot {
     }
 
     public void confirmCart() {
-        if (!this.confirmed) {
+        if (this.confirmed) {
             throw new IllegalStateException("The cart has already been confirmed!");
         }
         this.confirmed = true;
