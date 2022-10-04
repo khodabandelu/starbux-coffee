@@ -35,13 +35,13 @@ public class ProductControllerTest {
         var productCreatedEvent1 = ProductCreatedEvent.builder()
                 .id("1")
                 .categoryType("product")
-                .name("Black Coffee")
+                .name("test")
                 .price(4)
                 .build();
         var productCreatedEvent2 = ProductCreatedEvent.builder()
                 .id("2")
                 .categoryType("product")
-                .name("Latte")
+                .name("test2")
                 .price(5)
                 .build();
 
@@ -52,7 +52,7 @@ public class ProductControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.products.[*].name").value(hasItem("Black Coffee")))
+                .andExpect(jsonPath("$.products.[*].name").value(hasItem("test")))
                 .andExpect(jsonPath("$.products.[*].categoryType").value(hasItem("product")))
                 .andExpect(jsonPath("$.products.[*].price").value(hasItem(4.0)));
     }
@@ -63,17 +63,17 @@ public class ProductControllerTest {
         var productCreatedEvent1 = ProductCreatedEvent.builder()
                 .id("1")
                 .categoryType("product")
-                .name("Black Coffee")
+                .name("test")
                 .price(4)
                 .build();
 
         eventHandler.on(productCreatedEvent1);
         // Get all the users
-        this.mockMvc.perform(get("/api/v1/product/byId/"+"1")
+        this.mockMvc.perform(get("/api/v1/product/"+"1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.products.[*].name").value(hasItem("Black Coffee")))
+                .andExpect(jsonPath("$.products.[*].name").value(hasItem("test")))
                 .andExpect(jsonPath("$.products.[*].categoryType").value(hasItem("product")))
                 .andExpect(jsonPath("$.products.[*].price").value(hasItem(4.0)));
     }
@@ -84,17 +84,17 @@ public class ProductControllerTest {
         var productCreatedEvent1 = ProductCreatedEvent.builder()
                 .id("1")
                 .categoryType("product")
-                .name("Black Coffee")
+                .name("test")
                 .price(4)
                 .build();
 
         eventHandler.on(productCreatedEvent1);
         // Get all the users
-        this.mockMvc.perform(get("/api/v1/product/byName/"+"Black Coffee")
+        this.mockMvc.perform(get("/api/v1/product/byName/"+"test")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.products.[*].name").value(hasItem("Black Coffee")))
+                .andExpect(jsonPath("$.products.[*].name").value(hasItem("test")))
                 .andExpect(jsonPath("$.products.[*].categoryType").value(hasItem("product")))
                 .andExpect(jsonPath("$.products.[*].price").value(hasItem(4.0)));
     }
@@ -105,7 +105,7 @@ public class ProductControllerTest {
         var productCreatedEvent1 = ProductCreatedEvent.builder()
                 .id("1")
                 .categoryType("product")
-                .name("Black Coffee")
+                .name("test")
                 .price(4)
                 .build();
 
@@ -115,7 +115,7 @@ public class ProductControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.products.[*].name").value(hasItem("Black Coffee")))
+                .andExpect(jsonPath("$.products.[*].name").value(hasItem("test")))
                 .andExpect(jsonPath("$.products.[*].categoryType").value(hasItem("product")))
                 .andExpect(jsonPath("$.products.[*].price").value(hasItem(4.0)));
     }
